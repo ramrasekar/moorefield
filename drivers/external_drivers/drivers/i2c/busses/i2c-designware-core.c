@@ -824,6 +824,7 @@ struct dw_i2c_dev *i2c_dw_setup(struct device *pdev, int bus_idx,
 	acpi_i2c_register_devices(adap);
 	ACPI_HANDLE_SET(pdev, handle_save);
 
+	pm_runtime_enable(&adap->dev);
 	return dev;
 
 err_del_adap:
@@ -949,6 +950,7 @@ void i2c_dw_free(struct device *pdev, struct dw_i2c_dev *dev)
 	device_remove_file(&adap->dev, &dev_attr_lock_xfer);
 	sysfs_remove_group(&pdev->kobj, &i2c_dw_attr_group);
 
+	pm_runtime_disable(&adap->dev);
 	i2c_del_adapter(&dev->adapter);
 	put_device(pdev);
 	free_irq(dev->irq, dev);
@@ -1322,6 +1324,7 @@ i2c_dw_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 
 	down(&dev->lock);
 
+	WARN_ON(dev->status & STATUS_SUSPENDED);
 	if (dev->status & STATUS_SUSPENDED) {
 		dev_err(dev->dev, "access i2c after suspend!\n");
 		up(&dev->lock);

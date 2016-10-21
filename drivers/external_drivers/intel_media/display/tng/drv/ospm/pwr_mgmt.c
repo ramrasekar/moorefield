@@ -436,8 +436,6 @@ bool power_island_get(u32 hw_island)
 	}
 
 out_err:
-	if (ret && first_island)
-		pm_qos_remove_request(&dev_priv->s0ix_qos);
 	mutex_unlock(&g_ospm_data->ospm_lock);
 
 	return ret;
@@ -477,8 +475,6 @@ bool power_island_put(u32 hw_island)
 		/* Here, we use runtime pm framework to suit
 		 * S3 PCI suspend/resume
 		 */
-		pm_qos_add_request(&dev_priv->s0ix_qos,
-				PM_QOS_CPU_DMA_LATENCY, CSTATE_EXIT_LATENCY_S0i1 - 1);
 		pm_runtime_put_sync_suspend(&g_ospm_data->dev->pdev->dev);
 		wake_unlock(&dev_priv->ospm_wake_lock);
 	}
@@ -856,8 +852,6 @@ void ospm_apm_power_down_vsp(struct drm_device *dev)
 
 	if (!any_island_on()) {
 		PSB_DEBUG_PM("Suspending PCI\n");
-		pm_qos_add_request(&dev_priv->s0ix_qos,
-			PM_QOS_CPU_DMA_LATENCY, CSTATE_EXIT_LATENCY_S0i1 - 1);
 		pm_runtime_put(&g_ospm_data->dev->pdev->dev);
 		wake_unlock(&dev_priv->ospm_wake_lock);
 	}

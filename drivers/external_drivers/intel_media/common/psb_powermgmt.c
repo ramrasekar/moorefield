@@ -2240,24 +2240,13 @@ int psb_runtime_suspend(struct device *dev)
 	else
 		ret = ospm_power_suspend(gpDrmDevice->pdev, state);
 
-	if (!ret)
-		pm_qos_remove_request(&dev_priv->s0ix_qos);
 	return ret;
 }
 
 int psb_runtime_resume(struct device *dev)
 {
-	struct drm_psb_private *dev_priv = gpDrmDevice->dev_private;
 	PSB_DEBUG_ENTRY("\n");
 
-/* On CTP, we need to allow S0i3 even if psb driver is resumed */
-#ifdef CONFIG_CTP_DPST
-	pm_qos_add_request(&dev_priv->s0ix_qos,
-			PM_QOS_CPU_DMA_LATENCY, CSTATE_EXIT_LATENCY_S0i3);
-#else
-	pm_qos_add_request(&dev_priv->s0ix_qos,
-			PM_QOS_CPU_DMA_LATENCY, CSTATE_EXIT_LATENCY_S0i1 - 1);
-#endif
 	/* Nop for GFX */
 	return 0;
 }

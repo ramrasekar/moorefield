@@ -401,8 +401,6 @@ struct drm_psb_private {
 #ifdef CONFIG_MDFLD_DSI_DPU
 	void *dbi_dpu_info;
 #endif
-	/* QOS */
-	struct pm_qos_request s0ix_qos;
 
 	struct mdfld_dsi_config *dsi_configs[2];
 

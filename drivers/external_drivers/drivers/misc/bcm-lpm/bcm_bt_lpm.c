@@ -46,6 +46,9 @@ enum {
 #endif
 #define LPM_ON
 
+#define TIMER_LPM 200
+#define WKL_HZ HZ/2
+
 static struct rfkill *bt_rfkill;
 static bool bt_enabled;
 
@@ -268,7 +271,7 @@ static void update_host_wake_locked(int host_wake)
 		 * The chipset deasserts the hostwake lock, when there is no
 		 * more data to send.
 		 */
-		wake_lock_timeout(&bt_lpm.wake_lock, HZ/2);
+		wake_lock_timeout(&bt_lpm.wake_lock, WKL_HZ);
 	}
 
 	host_wake_uart_enabled = host_wake;
@@ -384,7 +387,8 @@ static int bcm_bt_lpm_init(struct platform_device *pdev)
 
 	hrtimer_init(&bt_lpm.enter_lpm_timer, CLOCK_MONOTONIC,
 							HRTIMER_MODE_REL);
-	bt_lpm.enter_lpm_delay = ktime_set(1, 0);  /* 1 sec */
+        bt_lpm.enter_lpm_delay = ktime_set(0, TIMER_LPM * NSEC_PER_MSEC);  /* TIMER_LPM msec */
+
 	bt_lpm.enter_lpm_timer.function = enter_lpm;
 
 	bt_lpm.host_wake = 0;

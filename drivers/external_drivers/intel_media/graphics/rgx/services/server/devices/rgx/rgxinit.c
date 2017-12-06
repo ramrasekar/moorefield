@@ -1021,9 +1021,7 @@ PVRSRV_ERROR PVRSRVRGXInitFirmwareKM(PVRSRV_DEVICE_NODE			*psDeviceNode,
 									    IMG_UINT32					ui32ConfigFlags,
 									    IMG_UINT32					ui32LogType,
 									    IMG_UINT32					ui32FilterFlags,
-									    RGXFWIF_COMPCHECKS_BVNC     *psClientBVNC,
-									    IMG_UINT32 ui32APMLatency,
-									    IMG_UINT32 ui32CoreClockSpeed)
+									    RGXFWIF_COMPCHECKS_BVNC     *psClientBVNC)
 {
 	PVRSRV_ERROR				eError;
 	RGXFWIF_COMPCHECKS_BVNC_DECLARE_AND_INIT(sBVNC);
@@ -1137,9 +1135,7 @@ PVRSRV_ERROR PVRSRVRGXInitFirmwareKM(PVRSRV_DEVICE_NODE			*psDeviceNode,
 							     ui32NumBIFTilingConfigs,
 							     pui32BIFTilingXStrides,
 							     ui32FilterFlags,
-							     psRGXFwInit,
-							     ui32APMLatency,
-							     ui32CoreClockSpeed);
+							     psRGXFwInit);
 	if (eError != PVRSRV_OK)
 	{
 		PVR_DPF((PVR_DBG_ERROR,"PVRSRVRGXInitFirmwareKM: RGXSetupFirmware failed (%u)", eError));

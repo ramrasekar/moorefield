@@ -201,9 +201,7 @@ PVRSRV_ERROR RGXSetupFirmware(PVRSRV_DEVICE_NODE	*psDeviceNode,
 							     IMG_UINT32            ui32NumTilingCfgs,
 							     IMG_UINT32            *pui32BIFTilingXStrides,
 							     IMG_UINT32			ui32FilterMode,
-							     RGXFWIF_DEV_VIRTADDR	*psRGXFWInitFWAddr,
-							     IMG_UINT32 ui32APMLatency,
-							     IMG_UINT32 ui32CoreClockSpeed);
+							     RGXFWIF_DEV_VIRTADDR	*psRGXFWInitFWAddr);
 
 
 IMG_VOID RGXFreeFirmware(PVRSRV_RGXDEV_INFO 	*psDevInfo);

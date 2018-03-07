@@ -291,7 +291,7 @@ static int sst_effects_set_params(struct snd_card *card,
 					struct snd_effect_params *params)
 {
 	int ret = 0;
-	u8 pipe_id;
+	u8 pipe_id=pipe_id;
 	u16 algo_id;
 	struct ipc_effect_payload dsp_payload;
 	struct sst_data *sst;
@@ -325,7 +325,7 @@ static int sst_effects_get_params(struct snd_card *card,
 					struct snd_effect_params *params)
 {
 	int ret = 0;
-	u8 pipe_id;
+	u8 pipe_id=pipe_id;
 	u16 algo_id;
 	struct ipc_effect_payload dsp_payload;
 	struct sst_data *sst;

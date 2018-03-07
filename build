@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Fonts
+bold=$(tput bold)
+normal=$(tput sgr0)
+
+# Version
+printf "Enter version number: "
+read V
+
+# Exports
+export ARCH=x86_64
+export SUBARCH=x86_64
+export CROSS_COMPILE=../x86_64-linux-android-4.9/bin/x86_64-linux-android-
+export DEFCONFIG=x86_64_moor_defconfig
+export BZIMAGE=arch/x86/boot/bzImage
+export KBUILD_BUILD_USER=Atom_v$V
+export KBUILD_BUILD_HOST=ramrasekar
+
+# Compile
+echo "${bold}==============================="
+echo "           COMPILING           "
+echo "===============================${normal}"
+START=$(date +"%s")
+make $DEFCONFIG
+make -j$(nproc --all) 2>&1 | tee build.log
+if [ -f $BZIMAGE ];
+then
+	END=$(date +"%s")
+	echo "${bold}==============================="
+	echo "            SUCCESS            "
+	echo "===============================${normal}"
+else
+	echo "${bold}==============================="
+	echo "             ERROR             "
+	echo "        Check build.log        "
+	echo "===============================${normal}"
+	exit 0
+fi
+
+# Pack
+rm -rf out/modules/*
+find . -name '*.ko' -exec strip --strip-debug {} \;
+find . -name '*.ko' -exec ./scripts/sign-file sha256 ./signing_key.priv ./signing_key.x509 {} \;
+find . -name '*.ko' -exec cp {} out/modules/ \;
+cd out/
+rm -f *.zip
+mv ../$BZIMAGE zImage
+echo "            ${bold}PACKING${normal}            "
+find . -type f -exec zip $KBUILD_BUILD_USER.zip {} +
+echo "${bold}==============================="
+echo "           ZIP READY           "
+echo "===============================${normal}"
+rm zImage
+rm -rf modules/*
+touch modules/placeholder
+cd ..
+
+# Clean
+echo "            ${bold}CLEANING${normal}            "
+make clean && make mrproper
+echo "${bold}==============================="
+echo "             DONE              "
+echo "Version number: $V"
+
+# Time
+TIME=$(($END - $START))
+echo "Compile time: $(($TIME / 60)) min $(($TIME % 60)) sec"
+echo "===============================${normal}"
+

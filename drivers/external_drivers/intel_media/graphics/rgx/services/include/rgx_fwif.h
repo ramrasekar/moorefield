@@ -428,7 +428,7 @@ typedef enum
 /*!
 * Active Power Latency default in ms
 */
-#define RGX_APM_LATENCY_DEFAULT			(500)
+#define RGX_APM_LATENCY_DEFAULT			(3)
 
 /*!
 * Core Clock Speed in Hz

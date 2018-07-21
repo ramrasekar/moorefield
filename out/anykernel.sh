@@ -161,6 +161,8 @@ dump_boot;
 
 # begin ramdisk changes
 
+replace_file init.power.mofd_v1.rc 750 init.power.mofd_v1.rc;
+
 # end ramdisk changes
 
 write_boot;

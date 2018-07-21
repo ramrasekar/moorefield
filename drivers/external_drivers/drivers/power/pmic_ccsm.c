@@ -468,7 +468,7 @@ exit:
 
 int pmic_get_battery_pack_temp(int *temp)
 {
-	if (chc.invalid_batt)
+	if ((chc.invalid_batt)&&(Read_PROJ_ID()!=PROJ_ID_ZX550ML))
 		return -ENODEV;
 	return pmic_read_adc_val(GPADC_BATTEMP0, temp, &chc);
 }

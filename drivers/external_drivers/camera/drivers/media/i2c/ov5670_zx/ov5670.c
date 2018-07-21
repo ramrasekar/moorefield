@@ -534,16 +534,16 @@ static long __ov5670_set_exposure(struct v4l2_subdev *sd, int coarse_itg,
 		return ret;
 
 	  if(gain >= 1*128 && gain < 2*128){
-		  // printk(KERN_ALERT"ASUSov5670 0x366A=0x00");
-		  ov5670_write_reg(client, OV5670_8BIT, 0x366A, 0x00);
-	  }else if(gain >= 2*128 && gain < 4*128){
-		  // printk(KERN_ALERT"ASUSov5670 0x366A=0x01");
+		  printk(KERN_ALERT"ASUSov5670 0x366A=0x01");
 		  ov5670_write_reg(client, OV5670_8BIT, 0x366A, 0x01);
-	  }else if(gain >= 4*128 && gain < 8*128){
-		  // printk(KERN_ALERT"ASUSov5670 0x366A=0x03");
+	  }else if(gain >= 2*128 && gain < 4*128){
+		  printk(KERN_ALERT"ASUSov5670 0x366A=0x03");
 		  ov5670_write_reg(client, OV5670_8BIT, 0x366A, 0x03);
+	  }else if(gain >= 4*128 && gain < 8*128){
+		  printk(KERN_ALERT"ASUSov5670 0x366A=0x07");
+		  ov5670_write_reg(client, OV5670_8BIT, 0x366A, 0x07);
 	  }else if(gain >= 8*128){
-		  // printk(KERN_ALERT"ASUSov5670 0x366A=0x07");
+		  printk(KERN_ALERT"ASUSov5670 0x366A=0x07");
 		  ov5670_write_reg(client, OV5670_8BIT, 0x366A, 0x07);
 	  }
 
@@ -601,7 +601,7 @@ static long __ov5670_set_exposure(struct v4l2_subdev *sd, int coarse_itg,
 
 		//printk(KERN_ERR "__ov5670_set_exposure  0x%x,0x%x,0x%x,++\n",vts_val,(vts_val & 0xFF),((vts_val >> 8) & 0xFF));
 
-	// printk(KERN_ERR "__ov5670_set_exposure  0x%x,0x%x,0x%x,++\n",vts_val,(vts_val & 0xFF),((vts_val >> 8) & 0xFF));
+	printk(KERN_ERR "__ov5670_set_exposure  0x%x,0x%x,0x%x,++\n",vts_val,(vts_val & 0xFF),((vts_val >> 8) & 0xFF));
 
 		ret = ov5670_write_reg(client, OV5670_8BIT, OV5670_TIMING_VTS_H, (vts_val >> 8) & 0xFF);
 		if (ret)

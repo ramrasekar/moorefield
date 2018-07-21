@@ -158,17 +158,12 @@ struct ion_device *gpsIonDev;
 
 static struct ion_platform_data gsGenericConfig =
 {
-	.nr = 3,
+	.nr = 2,
 	.heaps =
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(3,4,39))
 	(struct ion_platform_heap [])
 #endif
 	{
-		{
-			.type = ION_HEAP_TYPE_SYSTEM_CONTIG,
-			.name = "system_contig",
-			.id   = ION_HEAP_TYPE_SYSTEM_CONTIG,
-		},
 		{
 			.type = ION_HEAP_TYPE_SYSTEM,
 			.name = "system",

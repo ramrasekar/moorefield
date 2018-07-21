@@ -91,6 +91,7 @@ static int psh_recovery = 0;
 // Add for reading project ID
 // ZE550ML : 0x17
 // ZE551ML : 0x1F
+// ZE551ML CKD : 0x1E
 // ZR550ML : 0x1C
 // ZX550ML : 0x1B
 long getProjectId(void)
@@ -305,7 +306,7 @@ int do_setup_ddr(struct device *dev)
 
 	if (getProjectId() == 0x17)
 		snprintf(fname, 40, "psh.bin.ze550ml");
-	else if (getProjectId() == 0x1F)
+	else if (getProjectId() == 0x1F || getProjectId() == 0x1E)
 		snprintf(fname, 40, "psh.bin.ze551ml");
 	else if (getProjectId() == 0x1B)
 		snprintf(fname, 40, "psh.bin.zx550ml");

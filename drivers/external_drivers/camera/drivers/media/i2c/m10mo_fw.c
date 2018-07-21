@@ -2261,7 +2261,7 @@ int m10mo_USB_status(bool status)
 		filp_close(fp, current->files);
 out_file:
 	set_fs(old_fs);
-	msleep(2000);
+	msleep(300);
 	return err;
 }
 EXPORT_SYMBOL(m10mo_USB_status);

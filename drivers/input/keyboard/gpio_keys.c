@@ -500,7 +500,7 @@ static void gpio_keys_gpio_timer(unsigned long _data)
 	    if(state == 1 && type == EV_KEY && button->code == KEY_CAMERA) {
 		    printk(KERN_INFO "m10mo, gpio key to power on! \n");
 #ifdef CONFIG_VIDEO_M10MO
-		    (void) m10mo_gpio_set_power_on();
+		    // (void) m10mo_gpio_set_power_on();
 #endif
 		    wake_lock_timeout(&gpio_wake_lock, msecs_to_jiffies(2000));
     	}

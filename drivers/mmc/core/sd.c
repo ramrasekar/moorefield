@@ -1187,7 +1187,11 @@ bool is_sd_SanDisk(struct mmc_host *host)
 	   !strcmp(prod_name, "SP16G") || !strcmp(prod_name, "SP32G") || /*red black card 20160614*/
 	   !strcmp(prod_name, "SP64G") || !strcmp(prod_name, "SP128") ||
 	   !strcmp(prod_name, "SE16G") || !strcmp(prod_name, "SE32G") || /*red gold card 20160620*/
-	   !strcmp(prod_name, "SE64G") || !strcmp(prod_name, "SE128")) {
+	   !strcmp(prod_name, "SE64G") || !strcmp(prod_name, "SE128") ||
+	   !strcmp(prod_name, "SS02G") || !strcmp(prod_name, "SS04G") || /*Class 4 black card 20160630*/
+	   !strcmp(prod_name, "SS08G") || !strcmp(prod_name, "SS16G") ||
+	   !strcmp(prod_name, "SS32G") || !strcmp(prod_name, "SS64G") || 
+	   !strcmp(prod_name, "SS128")) {
 		if(old_ios.timing == MMC_TIMING_UHS_DDR50)
 			return true;
 	}

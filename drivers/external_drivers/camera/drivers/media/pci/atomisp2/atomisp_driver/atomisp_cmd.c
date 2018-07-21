@@ -634,8 +634,6 @@ irqreturn_t atomisp_isr(int irq, void *dev)
 			}
 
 			atomisp_eof_event(asd, eof_event.event.exp_id);
-			printk(KERN_INFO "ASUSBSP --- @%s EOF exp_id %d\n", __func__,
-				eof_event.event.exp_id);
 		}
 
 		irq_infos &= ~IA_CSS_IRQ_INFO_ISYS_EVENTS_READY;

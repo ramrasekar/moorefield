@@ -1000,6 +1000,28 @@ int mm8033_read_volt(void)
 		return volt;
 	}
 }
+int mm8033_read_temp(void)
+{
+	int temp = 0;
+
+	if (!i2c_rw_lock)
+		temp = mm8033_read_reg(g_mm8033_chip->client, REG_TEMPERATURE);
+	else
+		temp = g_temp;
+
+	if (temp < 0) {
+		GAUGE_ERR("error in reading battery temperature = 0x%04x\n", temp);
+		return g_temp;
+	}else {
+		if (temp > 32767) {
+			temp -= 65536;
+		}
+		//GAUGE_INFO("temp = %d\n", temp);
+		g_temp = temp;
+		return temp;
+	}
+
+}
 int mm8033_read_percentage(void)
 {
 	int soc = 0;
@@ -1022,7 +1044,7 @@ int mm8033_read_percentage(void)
 		} else {
 #ifdef SOC_SMOOTH_ALGO
 			soc_final = (soc+128) / 256;
-			GAUGE_INFO("%s start smooth algo, soc last=%d, soc now=%d\n",__func__, mm8033_pre_soc, soc_final);
+			GAUGE_INFO("%s start smooth algo, soc last=%d, soc now=%d, temp = %d\n",__func__, mm8033_pre_soc, soc_final, mm8033_read_temp());
 			if (mm8033_pre_soc!=0) {
 				if ((mm8033_pre_soc+3) <= soc_final) {
 					/* reset ocv if gauge soc=100, now soc<100, 0<cur<150 */
@@ -1038,8 +1060,8 @@ int mm8033_read_percentage(void)
 						i2c_rw_lock = 0;
 					}
 					soc_final = mm8033_pre_soc + 3;
-				} else if((soc_final>2)&&(mm8033_read_volt()>3200)&&(mm8033_read_volt()<3300)) {
-					/* reset ocv if gauge soc>2, 3.2V<bat<3.3V*/
+				} else if((soc_final>2)&&(mm8033_read_volt()>3200)&&(mm8033_read_volt()<3300)&&(mm8033_read_temp()>0)) {
+					/* reset ocv if gauge soc>2, 3.2V<bat<3.3V, temp>0oC*/
 					i2c_rw_lock = 1;
 					ret = mm8033_write_reg(g_mm8033_chip->client, REG_FG_CONDITION, 0x0020);
 					if (ret < 0) {
@@ -1060,28 +1082,6 @@ int mm8033_read_percentage(void)
 #endif
 		}
 	}
-}
-int mm8033_read_temp(void)
-{
-	int temp = 0;
-
-	if (!i2c_rw_lock)
-		temp = mm8033_read_reg(g_mm8033_chip->client, REG_TEMPERATURE);
-	else
-		temp = g_temp;
-
-	if (temp < 0) {
-		GAUGE_ERR("error in reading battery temperature = 0x%04x\n", temp);
-		return g_temp;
-	}else {
-		if (temp > 32767) {
-			temp -= 65536;
-		}
-		//GAUGE_INFO("temp = %d\n", temp);
-		g_temp = temp;
-		return temp;
-	}
-
 }
 int mm8033_read_fcc(void)
 {

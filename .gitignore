@@ -18,13 +18,11 @@
 *.so
 *.so.dbg
 *.mod.c
-*.i
 *.lst
 *.symtypes
 *.order
 modules.builtin
 *.elf
-*.bin
 *.gz
 *.bz2
 *.lzma
@@ -32,6 +30,9 @@ modules.builtin
 *.lzo
 *.patch
 *.gcno
+*.zip
+*.log
+*zImage
 
 #
 # Top-level generic files

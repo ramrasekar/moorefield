@@ -165,6 +165,8 @@ rm ./lib/modules/*.ko;
 cp -af /tmp/anykernel/modules/*.ko ./lib/modules/;
 chmod 0644 ./lib/modules/*.ko;
 
+replace_file init.common.rc 750 init.common.rc;
+
 # end ramdisk changes
 
 write_boot;
